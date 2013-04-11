@@ -25,7 +25,7 @@ def selective_round(value, places):
     except TypeError:
         return round(value, places)
     
-def get_discounting_factors(drate, duration):
+def get_discounting_factors(drate, duration=1):
     '''
     Returns a list of discounting factors, but it is also 
     applicable to compounding rates, or anything of the form:
