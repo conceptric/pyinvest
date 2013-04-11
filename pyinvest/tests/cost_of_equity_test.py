@@ -1,41 +1,6 @@
 import unittest
 
-def cost_of_equity(risk_free, market_risk, stock_beta=1):
-    '''
-    Calculates the fractional cost of equity given:
-    risk_free  : fractional risk free rate.
-    market_risk: fractional market risk premimum.
-    stock_beta : the market beta of the stock.
-    '''
-    return round(risk_free + (stock_beta * market_risk), 3)
-    
-def get_discounting_factors(drate, duration):
-    '''
-    Returns a list of discounting factors, but it is also 
-    applicable to compounding rates, or anything of the form:
-    
-    (1 + discount rate)^year
-    
-    drate   : fractional discounting / compounding rate.
-    duration: number of years for which factors are required.
-    '''
-    return map(lambda t: (1 + drate)**t, range(1, duration + 1, 1))
-
-
-
-class TestGetDiscountingFactors(unittest.TestCase):
-    '''
-    Test a function to return a list of annual discounting factors 
-    based on a discounting rate and a duration.
-    '''
-    def test_length_of_list(self):
-        actual = get_discounting_factors(1, 5)
-        self.assertEquals(len(actual), 5)
-
-    def test_returned_values_correct(self):
-        expected = [2, 4, 8, 16, 32]
-        actual = get_discounting_factors(1, 5)
-        self.assertEquals(actual, expected)
+from pyinvest.utils import *
 
 class TestCostOfEquity(unittest.TestCase):
     """
