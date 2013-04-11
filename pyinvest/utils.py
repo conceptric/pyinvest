@@ -1,3 +1,5 @@
+import numpy as np
+
 def cost_of_equity(risk_free, market_risk, stock_beta=1):
     '''
     Calculates the fractional cost of equity given:
@@ -6,6 +8,11 @@ def cost_of_equity(risk_free, market_risk, stock_beta=1):
     stock_beta : the market beta of the stock.
     '''
     return round(risk_free + (stock_beta * market_risk), 3)
+
+def array_cost_of_equity(rfr, mrp, beta=1):
+    coes = np.array(rfr) + (np.array(beta) * np.array(mrp))
+    return map(lambda f: round(f, 3), coes)
+
     
 def get_discounting_factors(drate, duration):
     '''
