@@ -2,7 +2,7 @@ import unittest
 
 from pyinvest.utils import *
 
-class TestCostOfEquity(unittest.TestCase):
+class TestCostOfEquityWithScalars(unittest.TestCase):
     """
     The Cost of Equity function with single value 
     arguments.
@@ -31,11 +31,11 @@ class TestCostOfEquityWithSingleElementArrays(unittest.TestCase):
     """
     def test_no_beta_supplied(self):
         ''' Optional beta defaults to 1 '''
-        actual = array_cost_of_equity([1], [1])
+        actual = cost_of_equity([1], [1])
         self.assertEquals(actual, [2])
 
     def test_beta_equals_scalar_zero(self):
-        actual = array_cost_of_equity([1], [1], 0)
+        actual = cost_of_equity([1], [1], 0)
         self.assertEquals(actual, [1])
 
 
@@ -50,19 +50,19 @@ class TestCostOfEquityWithMultlElementArrays(unittest.TestCase):
 
     def test_no_beta_supplied(self):
         ''' Optional beta defaults to 1 '''
-        actual = array_cost_of_equity(self.risk, self.market)
+        actual = cost_of_equity(self.risk, self.market)
         self.assertEquals(actual[0], 2)
         self.assertEquals(actual[1], 2)
 
     def test_two_dimension_arguments(self):
         betas = [0, 1]
-        actual = array_cost_of_equity(self.risk, self.market, betas)
+        actual = cost_of_equity(self.risk, self.market, betas)
         self.assertEquals(actual[0], 1)
         self.assertEquals(actual[1], 2)
 
     def test_two_dimension_arguments_with_rounding(self):
         betas = [0.55550, 0.55551]
-        actual = array_cost_of_equity(self.risk, self.market, betas)
+        actual = cost_of_equity(self.risk, self.market, betas)
         self.assertEquals(actual[0], 1.555)
         self.assertEquals(actual[1], 1.556)
 

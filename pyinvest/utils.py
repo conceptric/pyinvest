@@ -1,18 +1,28 @@
 import numpy as np
 
-def cost_of_equity(risk_free, market_risk, stock_beta=1):
+def cost_of_equity(rfr, mrp, beta=1):
     '''
-    Calculates the fractional cost of equity given:
-    risk_free  : fractional risk free rate.
-    market_risk: fractional market risk premimum.
-    stock_beta : the market beta of the stock.
+    Calculates the fractional cost of equity from collections:
+    
+    risk_free  : collection of fractional risk free rates.
+    market_risk: collection of fractional market risk premimums.
+    stock_beta : collection of the market beta of the stocks.
+    
+    The beta is optional and defaults to 1.
     '''
-    return round(risk_free + (stock_beta * market_risk), 3)
-
-def array_cost_of_equity(rfr, mrp, beta=1):
     coes = np.array(rfr) + (np.array(beta) * np.array(mrp))
-    return map(lambda f: round(f, 3), coes)
+    return selective_round(coes, 3)
 
+def selective_round(value, places):
+    ''' 
+    Applies the round function depending on data type 
+    value   : a single or collection of float values.
+    places  : an integer for the number of decimal places.
+    '''
+    try:
+        return map(lambda f: round(f, places), value)
+    except TypeError:
+        return round(value, places)
     
 def get_discounting_factors(drate, duration):
     '''
