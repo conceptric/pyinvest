@@ -35,7 +35,13 @@ def get_discounting_factors(drate, duration=1):
     drate   : fractional discounting / compounding rate.
     duration: number of years for which factors are required.
     '''
-    return map(lambda t: (1 + drate)**t, range(1, duration + 1, 1))
+    years = range(1, duration + 1, 1)
+    rates = np.array(drate)
+    try:
+        discounts = map(lambda r, t: (1 + r)**t, rates, years)
+    except TypeError:
+        discounts = map(lambda t: (1 + drate)**t, years)
+    return selective_round(discounts, 3)
 
 
 
