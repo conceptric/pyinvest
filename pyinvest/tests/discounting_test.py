@@ -17,6 +17,15 @@ class TestGetDiscountingFactors(unittest.TestCase):
         self.assertEquals(len(actual), 1)
         self.assertEquals(actual[0], 2)
 
+    def test_decimal_places_in_factors(self):
+        ''' Places is optional and defaults to 3 decimal places '''
+        actual = get_discounting_factors(1.1111)
+        self.assertEquals(actual[0], 2.111)
+
+    def test_decimal_places_can_be_specified(self):
+        actual = get_discounting_factors(1.1111, places=4)
+        self.assertEquals(actual[0], 2.1111)
+
 
 class TestDiscountWithFixedRate(unittest.TestCase):
     '''

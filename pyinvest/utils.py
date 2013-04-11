@@ -14,7 +14,7 @@ def cost_of_equity(rfr, mrp, beta=1):
     coes = np.array(rfr) + (np.array(beta) * np.array(mrp))
     return selective_round(coes, 3)
 
-def get_discounting_factors(drate, duration=1):
+def get_discounting_factors(drate, duration=1, places=3):
     '''
     Returns a list of discounting factors, but it is also 
     applicable to compounding rates, or anything of the form:
@@ -25,6 +25,7 @@ def get_discounting_factors(drate, duration=1):
               It can be a single value or a list of values 
               for each year.
     duration: number of years for which factors are required.
+    places  : number of decimal place for the factors.
     '''
     years = range(1, duration + 1, 1)
     try:
@@ -32,7 +33,7 @@ def get_discounting_factors(drate, duration=1):
         discounts = map(lambda r, t: (1 + r)**t, drate, years)
     except TypeError:
         discounts = map(lambda t: (1 + drate)**t, years)
-    return selective_round(discounts, 3)
+    return selective_round(discounts, places)
 
 def __check_list_length(alist, size):
     ''' Checks the size of a list and raises error incorrect '''
