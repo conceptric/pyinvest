@@ -9,6 +9,7 @@ def cost_of_equity(rfr, mrp, beta=1):
     stock_beta : collection of the market beta of the stocks.
     
     The beta is optional and defaults to 1.
+    Returns the type of the most complex argument.
     '''
     coes = np.array(rfr) + (np.array(beta) * np.array(mrp))
     return selective_round(coes, 3)

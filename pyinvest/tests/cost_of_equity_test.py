@@ -11,7 +11,8 @@ class TestCostOfEquityWithScalars(unittest.TestCase):
         actual = cost_of_equity(1, 1, 0)
         self.assertEquals(actual, 1)
 
-    def test_beta_optional_and_equals_one(self):
+    def test_beta_optional(self):
+        ''' Optional beta defaults to 1 '''
         actual = cost_of_equity(1, 1)
         self.assertEquals(actual, 2)
 
@@ -23,23 +24,34 @@ class TestCostOfEquityWithScalars(unittest.TestCase):
         actual = cost_of_equity(0.04, 0.03, 0.33)
         self.assertEquals(actual, 0.05)
 
+    def test_returns_a_float(self):
+        actual = cost_of_equity(1, 1)
+        self.assertIsInstance(actual, float)
 
-class TestCostOfEquityWithSingleElementArrays(unittest.TestCase):
+
+class TestCostOfEquityWithSingleElementLists(unittest.TestCase):
     """
     The Cost of Equity function with single element 
     array arguments.
     """
+    def setUp(self):
+        self.arg = [1]
+        
     def test_no_beta_supplied(self):
         ''' Optional beta defaults to 1 '''
-        actual = cost_of_equity([1], [1])
+        actual = cost_of_equity(self.arg, self.arg)
         self.assertEquals(actual, [2])
 
     def test_beta_equals_scalar_zero(self):
-        actual = cost_of_equity([1], [1], 0)
+        actual = cost_of_equity(self.arg, self.arg, 0)
         self.assertEquals(actual, [1])
 
+    def test_returns_a_list(self):
+        actual = cost_of_equity(self.arg, self.arg, 0)
+        self.assertIsInstance(actual, list)
 
-class TestCostOfEquityWithMultlElementArrays(unittest.TestCase):
+
+class TestCostOfEquityWithMultlElementLists(unittest.TestCase):
     """
     The Cost of Equity function with multiple element 
     array arguments.
@@ -66,6 +78,10 @@ class TestCostOfEquityWithMultlElementArrays(unittest.TestCase):
         self.assertEquals(actual[0], 1.555)
         self.assertEquals(actual[1], 1.556)
 
+    def test_returns_a_list(self):
+        betas = [0, 1]
+        actual = cost_of_equity(self.risk, self.market, betas)
+        self.assertIsInstance(actual, list)
 
         
 if __name__ == '__main__':
