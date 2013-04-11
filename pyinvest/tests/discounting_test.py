@@ -43,12 +43,13 @@ class TestDiscountWithVariableRates(unittest.TestCase):
     Test discounting factors with a variable discount rate.
     '''
     def setUp(self):
-        rates = [0.01, 0.02, 0.04, 0.08, 0.16]
-        self.actual = get_discounting_factors(rates, 5)
+        self.rates = [0.01, 0.02, 0.04, 0.08, 0.16]
+        self.years = len(self.rates)
+        self.actual = get_discounting_factors(self.rates, self.years)
         
     def test_correct_length_of_list(self):
         ''' Returns an element for each year '''
-        self.assertEquals(len(self.actual), 5)
+        self.assertEquals(len(self.actual), self.years)
 
     def test_with_constant_discount_rate(self):
         ''' 
@@ -58,7 +59,24 @@ class TestDiscountWithVariableRates(unittest.TestCase):
         expected = [1.010, 1.040, 1.125, 1.360, 2.100]
         self.assertEquals(self.actual, expected)
 
+    def test_must_have_a_rate_for_each_year(self):
+        ''' 
+        Raise an error is rate list length is too short.
+        '''
+        self.rates.pop()
+        self.assertEquals(len(self.rates), self.years - 1)
+        with self.assertRaises(ValueError):
+            get_discounting_factors(self.rates, self.years)
 
-
+    def test_must_only_have_a_rate_for_each_year(self):
+        ''' 
+        Raise an error is rate list length is too long.
+        '''
+        self.rates.append(0.01)
+        self.assertEquals(len(self.rates), self.years + 1)
+        with self.assertRaises(ValueError):
+            get_discounting_factors(self.rates, self.years)
+        
+        
 if __name__ == '__main__':
     unittest.main()

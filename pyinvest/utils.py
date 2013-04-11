@@ -14,6 +14,31 @@ def cost_of_equity(rfr, mrp, beta=1):
     coes = np.array(rfr) + (np.array(beta) * np.array(mrp))
     return selective_round(coes, 3)
 
+def get_discounting_factors(drate, duration=1):
+    '''
+    Returns a list of discounting factors, but it is also 
+    applicable to compounding rates, or anything of the form:
+    
+    (1 + rate)^year
+    
+    drate   : fractional discounting / compounding rate.
+              It can be a single value or a list of values 
+              for each year.
+    duration: number of years for which factors are required.
+    '''
+    years = range(1, duration + 1, 1)
+    try:
+        __check_list_length(drate, duration)
+        discounts = map(lambda r, t: (1 + r)**t, drate, years)
+    except TypeError:
+        discounts = map(lambda t: (1 + drate)**t, years)
+    return selective_round(discounts, 3)
+
+def __check_list_length(alist, size):
+    ''' Checks the size of a list and raises error incorrect '''
+    if len(alist) < size: raise ValueError('List too short.')
+    if len(alist) > size: raise ValueError('List too long.')
+
 def selective_round(value, places):
     ''' 
     Applies the round function depending on data type 
@@ -24,24 +49,4 @@ def selective_round(value, places):
         return map(lambda f: round(f, places), value)
     except TypeError:
         return round(value, places)
-    
-def get_discounting_factors(drate, duration=1):
-    '''
-    Returns a list of discounting factors, but it is also 
-    applicable to compounding rates, or anything of the form:
-    
-    (1 + discount rate)^year
-    
-    drate   : fractional discounting / compounding rate.
-    duration: number of years for which factors are required.
-    '''
-    years = range(1, duration + 1, 1)
-    rates = np.array(drate)
-    try:
-        discounts = map(lambda r, t: (1 + r)**t, rates, years)
-    except TypeError:
-        discounts = map(lambda t: (1 + drate)**t, years)
-    return selective_round(discounts, 3)
-
-
 
