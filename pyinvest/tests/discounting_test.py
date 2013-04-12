@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 
 from pyinvest.utils import *
 
@@ -6,10 +7,10 @@ class TestGetDiscountingFactors(unittest.TestCase):
     '''
     Test with optional arguments.
     '''
-    def test_returns_a_list(self):
-        ''' Returns a list even for a single year '''
+    def test_returns_an_array(self):
+        ''' Returns a numpy array even for a single year '''
         actual = get_discounting_factors(1, 1)
-        self.assertIsInstance(actual, list)
+        self.assertIsInstance(actual, np.ndarray)
 
     def test_duration_is_optional(self):
         ''' Duration is optional and defaults a single year '''
@@ -34,7 +35,7 @@ class TestDiscountWithFixedRate(unittest.TestCase):
     def setUp(self):
         self.actual = get_discounting_factors(0.04, 5)
         
-    def test_correct_length_of_list(self):
+    def test_correct_length_of_array(self):
         ''' Returns an element for each year '''
         self.assertEquals(len(self.actual), 5)
 
@@ -44,7 +45,8 @@ class TestDiscountWithFixedRate(unittest.TestCase):
         a constant discount rate.
         '''
         expected = [1.040, 1.082, 1.125, 1.170, 1.217]
-        self.assertEquals(self.actual, expected)
+        for i in range(0, len(expected), 1):
+            self.assertEquals(self.actual[i], expected[i])
 
 
 class TestDiscountWithVariableRates(unittest.TestCase):
@@ -56,7 +58,7 @@ class TestDiscountWithVariableRates(unittest.TestCase):
         self.years = len(self.rates)
         self.actual = get_discounting_factors(self.rates, self.years)
         
-    def test_correct_length_of_list(self):
+    def test_correct_length_of_array(self):
         ''' Returns an element for each year '''
         self.assertEquals(len(self.actual), self.years)
 
@@ -66,11 +68,12 @@ class TestDiscountWithVariableRates(unittest.TestCase):
         a constant discount rate.
         '''
         expected = [1.010, 1.040, 1.125, 1.360, 2.100]
-        self.assertEquals(self.actual, expected)
+        for i in range(0, len(expected), 1):
+            self.assertEquals(self.actual[i], expected[i])
 
     def test_must_have_a_rate_for_each_year(self):
         ''' 
-        Raise an error is rate list length is too short.
+        Raise an error if rate list length is too short.
         '''
         self.rates.pop()
         self.assertEquals(len(self.rates), self.years - 1)
@@ -79,7 +82,7 @@ class TestDiscountWithVariableRates(unittest.TestCase):
 
     def test_must_only_have_a_rate_for_each_year(self):
         ''' 
-        Raise an error is rate list length is too long.
+        Raise an error if rate list length is too long.
         '''
         self.rates.append(0.01)
         self.assertEquals(len(self.rates), self.years + 1)

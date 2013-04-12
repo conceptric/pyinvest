@@ -12,7 +12,10 @@ class TestProjectedDividends(unittest.TestCase):
         
     def test_returns_next_two_years_dividends(self):
         actual = get_projected_dividends(1, 0.05, 2)
-        self.assertEquals(actual, [1.05, 1.1025]) 
+        expected = [1.05, 1.1025]
+        for i in range(0, len(expected), 1):
+            self.assertEquals(actual[i], expected[i])
+
         
 class TestDividendGrowthRate(unittest.TestCase):
     """
@@ -25,6 +28,7 @@ class TestDividendGrowthRate(unittest.TestCase):
     def test_get_growth_rate(self):
         actual = get_growth_rate(313, 219, 0.1163)
         self.assertEquals(actual, 0.0349)
+
 
 class TestGordonGrowthModel(unittest.TestCase):
     """
@@ -67,3 +71,7 @@ class TestGordonGrowthModel(unittest.TestCase):
         self.assertEqual(len(actual), 3)
         for value in actual:
             self.assertEquals(value, 21)
+
+
+if __name__ == '__main__':
+    unittest.main()
