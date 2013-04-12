@@ -16,18 +16,35 @@ class TestProjectedDividends(unittest.TestCase):
         for i in range(0, len(expected), 1):
             self.assertEquals(actual[i], expected[i])
 
+
+class TestPayoutRatio(unittest.TestCase):
+    """
+    Test calculating the dividend payout ratio.
+    """
+    def test_payout_ratio_with_integers(self):
+        actual = get_payout_ratio(313, 219)
+        self.assertEquals(actual, 0.6997)
+
+    def test_payout_ratio_with_lists(self):
+        ratios = get_payout_ratio([313, 313], [219, 219])
+        for ratio in ratios:
+            self.assertEquals(ratio, 0.6997)
         
 class TestDividendGrowthRate(unittest.TestCase):
     """
     Test calculating the dividend growth rate.
-    """
-    def test_payout_ratio(self):
-        actual = get_payout_ratio(313, 219)
-        self.assertEquals(actual, 0.6997)
-        
+    """        
     def test_get_growth_rate(self):
         actual = get_growth_rate(313, 219, 0.1163)
         self.assertEquals(actual, 0.0349)
+
+    def test_get_growth_rate_with_lists(self):
+        eps = [313, 313]
+        dps = [219, 219]
+        roe = [0.1163, 0.1163]
+        rates = get_growth_rate(eps, dps, roe)
+        for rate in rates:
+            self.assertEquals(rate, 0.0349)
 
 
 class TestGordonGrowthModel(unittest.TestCase):

@@ -19,9 +19,11 @@ def get_payout_ratio(eps, dps, places=4):
     eps: earnings per share.
     dps: dividends per share.
     places: optionally defines the decimal rounding, default 4.
-    Returns fractional payout ratio.
+    Returns fractional payout ratio numpy array.
     '''
-    return selective_round(float(dps) / float(eps), places)
+    eps = np.array(eps).astype(float)
+    dps = np.array(dps).astype(float)
+    return selective_round(dps / eps, places)
 
 def get_growth_rate(eps, dps, roe, places=4):
     '''
@@ -32,9 +34,11 @@ def get_growth_rate(eps, dps, roe, places=4):
     roe: fractional return on equity.
     places: optionally defines the decimal rounding, default 4.
     
-    Returns the fractional expected growth rate.
+    Returns the fractional expected growth rate numpy array.
     '''
-    return selective_round((1 - get_payout_ratio(eps, dps)) * roe, places)
+    roe = np.array(roe).astype(float)
+    ones = np.ones_like(roe)
+    return selective_round((ones - get_payout_ratio(eps, dps)) * roe, places)
     
 def gordon_growth(current, coe, growth):
     '''
