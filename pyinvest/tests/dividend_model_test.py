@@ -18,9 +18,13 @@ class TestDividendGrowthRate(unittest.TestCase):
     """
     Test calculating the dividend growth rate.
     """
+    def test_payout_ratio(self):
+        actual = get_payout_ratio(313, 219)
+        self.assertEquals(actual, 0.6997)
+        
     def test_get_growth_rate(self):
-        actual = get_growth_rate(2, 1, 0.1)
-        self.assertEquals(actual, 0.2)
+        actual = get_growth_rate(313, 219, 0.1163)
+        self.assertEquals(actual, 0.0349)
 
 class TestGordonGrowthModel(unittest.TestCase):
     """

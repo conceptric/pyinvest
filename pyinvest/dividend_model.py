@@ -13,17 +13,28 @@ def get_projected_dividends(current, rate, years=1, places=4):
     '''
     return current * get_discounting_factors(rate, years, places)
 
-def get_growth_rate(eps, dps, roe):
+def get_payout_ratio(eps, dps, places=4):
+    '''
+    Calculates the stock payout ratio based on:
+    eps: earnings per share.
+    dps: dividends per share.
+    places: optionally defines the decimal rounding, default 4.
+    Returns fractional payout ratio.
+    '''
+    return selective_round(float(dps) / float(eps), places)
+
+def get_growth_rate(eps, dps, roe, places=4):
     '''
     Calculates the expected growth rate based on:
     
     eps: earnings per share.
     dps: dividends per share.
     roe: fractional return on equity.
+    places: optionally defines the decimal rounding, default 4.
     
     Returns the fractional expected growth rate.
     '''
-    return (eps / dps) * roe
+    return selective_round((1 - get_payout_ratio(eps, dps)) * roe, places)
     
 def gordon_growth(current, coe, growth):
     '''
