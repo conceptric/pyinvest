@@ -17,19 +17,6 @@ class TestProjectedDividends(unittest.TestCase):
             self.assertEquals(actual[i], expected[i])
 
 
-class TestPayoutRatio(unittest.TestCase):
-    """
-    Test calculating the dividend payout ratio.
-    """
-    def test_payout_ratio_with_integers(self):
-        actual = get_payout_ratio(313, 219)
-        self.assertEquals(actual, 0.6997)
-
-    def test_payout_ratio_with_lists(self):
-        ratios = get_payout_ratio([313, 313], [219, 219])
-        for ratio in ratios:
-            self.assertEquals(ratio, 0.6997)
-        
 class TestDividendGrowthRate(unittest.TestCase):
     """
     Test calculating the dividend growth rate.

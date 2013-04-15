@@ -13,18 +13,6 @@ def get_projected_dividends(current, rate, years=1, places=4):
     '''
     return current * get_discounting_factors(rate, years, places)
 
-def get_payout_ratio(eps, dps, places=4):
-    '''
-    Calculates the stock payout ratio based on:
-    eps: earnings per share.
-    dps: dividends per share.
-    places: optionally defines the decimal rounding, default 4.
-    Returns fractional payout ratio numpy array.
-    '''
-    eps = np.array(eps).astype(float)
-    dps = np.array(dps).astype(float)
-    return selective_round(dps / eps, places)
-
 def get_growth_rate(eps, dps, roe, places=4):
     '''
     Calculates the expected growth rate based on:
@@ -38,7 +26,7 @@ def get_growth_rate(eps, dps, roe, places=4):
     '''
     roe = np.array(roe).astype(float)
     ones = np.ones_like(roe)
-    return selective_round((ones - get_payout_ratio(eps, dps)) * roe, places)
+    return selective_round((ones - payout_ratio(eps, dps)) * roe, places)
     
 def gordon_growth(current, coe, growth):
     '''
