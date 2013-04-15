@@ -47,3 +47,19 @@ def gordon_growth(current, coe, growth):
     except TypeError:
         future = get_projected_dividends(current, growth)
     return selective_round(future / (np.array(coe) - np.array(growth)), 2)
+    
+    
+def high_growth_phase_value(coe, dps, rate, period):
+    '''
+    Calculates the stock value of high growth phase.
+    coe     : cost of equity (can be a list of values).
+    dps     : baseline dividend per share.
+    rate    : expected dividend growth rate.
+    period  : length of the high growth phase in years.
+    Returns the share value of the high growth phase.
+    '''
+    dividends = get_projected_dividends(dps, rate, years=period)
+    factors = get_discounting_factors(coe, period)
+    return np.sum(dividends / factors)
+
+
