@@ -59,7 +59,7 @@ def high_growth_phase_value(coe, dps, rate, period):
     Returns the share value of the high growth phase.
     '''
     dividends = get_projected_dividends(dps, rate, years=period)
-    factors = get_discounting_factors(coe, period)
-    return np.sum(dividends / factors)
+    coes = get_discounting_factors(coe, period)
+    return np.sum(dividends / coes)
 
 
