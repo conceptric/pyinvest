@@ -50,25 +50,3 @@ def selective_round(value, places):
         return map(lambda f: round(f, places), value)
     except TypeError:
         return round(value, places)
-
-def payout_ratio(eps, dps):
-    '''
-    Calculates the stock payout ratio based on:
-    eps: earnings per share.
-    dps: dividends per share.
-    Returns fractional payout ratio numpy array.
-    '''
-    return 1 / retention_ratio(eps, dps)
-
-def retention_ratio(eps, dps):
-    '''
-    Calculates the retention ratio for a stock:    
-    eps: earnings per share.
-    dps: dividends per share.
-    Returns fractional payout ratio numpy array.
-    '''
-    eps = np.array(eps).astype(float)
-    dps = np.array(dps).astype(float)
-    return eps / dps
-    
-    

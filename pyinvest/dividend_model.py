@@ -1,5 +1,31 @@
 from pyinvest.utils import *
 
+class Stock:
+    """
+    Class to represent the data and ratios of a stock.
+    """
+    def __init__(self, eps, dps):
+        '''
+        eps: earnings per share.
+        dps: dividends per share.        
+        '''
+        self.eps = np.array(eps).astype(float)
+        self.dps = np.array(dps).astype(float)
+
+    def retention_ratio(self):
+        '''
+        Calculates the retention ratio for a stock:    
+        Returns fractional payout ratio numpy array.
+        '''
+        return self.eps / self.dps
+
+    def payout_ratio(self):
+        '''
+        Calculates the stock payout ratio based on:
+        Returns fractional payout ratio numpy array.
+        '''
+        return 1 / self.retention_ratio()
+            
         
 class HighGrowthPhase:
     """
@@ -53,9 +79,10 @@ def get_growth_rate(eps, dps, roe, places=4):
     
     Returns the fractional expected growth rate numpy array.
     '''
+    stock = Stock(eps, dps)
     roe = np.array(roe).astype(float)
     ones = np.ones_like(roe)
-    return selective_round((ones - payout_ratio(eps, dps)) * roe, places)
+    return selective_round((ones - stock.payout_ratio()) * roe, places)
     
 def gordon_growth(current, coe, growth):
     '''
