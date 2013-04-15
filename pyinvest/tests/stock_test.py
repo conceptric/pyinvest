@@ -1,6 +1,6 @@
 import unittest
 
-from pyinvest.dividend_model import *
+from pyinvest.stock import *
 
 
 class TestStockDividendCover(unittest.TestCase):
