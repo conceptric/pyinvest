@@ -17,23 +17,6 @@ class TestProjectedDividends(unittest.TestCase):
             self.assertEquals(actual[i], expected[i])
 
 
-class TestDividendGrowthRate(unittest.TestCase):
-    """
-    Test calculating the dividend growth rate.
-    """        
-    def test_get_growth_rate(self):
-        actual = get_growth_rate(313, 219, 0.1163)
-        self.assertEquals(actual, 0.0349)
-
-    def test_get_growth_rate_with_lists(self):
-        eps = [313, 313]
-        dps = [219, 219]
-        roe = [0.1163, 0.1163]
-        rates = get_growth_rate(eps, dps, roe)
-        for rate in rates:
-            self.assertEquals(rate, 0.0349)
-
-
 class TestGordonGrowthModel(unittest.TestCase):
     """
     Test valuation using the Gordon Growth Model.

@@ -2,6 +2,21 @@ import unittest
 
 from pyinvest.dividend_model import *
 
+
+class TestStockDividendCover(unittest.TestCase):
+    """
+    Test calculating the dividend cover.
+    """
+    def test_payout_ratio_with_integers(self):
+        actual = Stock(eps=2, dps=1).dividend_cover()
+        self.assertEquals(actual, 2)
+
+    def test_payout_ratio_with_lists(self):
+        ratios = Stock(eps=[2, 2], dps=[1, 1]).dividend_cover()
+        for ratio in ratios:
+            self.assertEquals(ratio, 2)
+
+
 class TestStockPayoutRatio(unittest.TestCase):
     """
     Test calculating the dividend payout ratio.
@@ -18,7 +33,7 @@ class TestStockPayoutRatio(unittest.TestCase):
 
 class TestStockRetentionRatio(unittest.TestCase):
     """
-    Test the calculation for stock retention ratio
+    Test the calculation for stock retention ratio.
     """
     def test_returns_scalar_with_scalar_arguments(self):
         actual = Stock(2, 1).retention_ratio()
@@ -44,6 +59,27 @@ class TestStockRetentionRatio(unittest.TestCase):
         actual = Stock(8, [2, 4]).retention_ratio()
         self.assertEquals(actual[0], 4)
         self.assertEquals(actual[1], 2)
+
+class TestStockDividendGrowthRate(unittest.TestCase):
+    """
+    Test calculating the dividend growth rate.
+    """        
+    def setUp(self):
+        self.eps = 313
+        self.dps = 219
+        self.roe = 0.1163
+        self.expected = 0.03492715654952077
+    
+    def test_get_growth_rate(self):
+        actual = Stock(self.eps, self.dps, self.roe).growth_rate()
+        self.assertEquals(actual, self.expected)
+
+    def test_get_growth_rate_with_lists(self):
+        eps = [self.eps, self.eps]
+        dps = [self.dps, self.dps]
+        roe = [self.roe, self.roe]
+        for rate in Stock(eps, dps, roe).growth_rate():
+            self.assertEquals(rate, self.expected)
 
 
 if __name__ == '__main__':
