@@ -1,5 +1,34 @@
 from pyinvest.utils import *
 
+        
+class HighGrowthPhase:
+    """
+    Class representing a stock in the high growth 
+    phase of the dividend discount model.
+    coe     : baseline cost of equity (can be a list of values).
+    dps     : baseline dividend per share.
+    rate    : expected dividend growth rate.
+    duration: length of the high growth phase in years.
+    """
+    def __init__(self, coe, dps, rate, duration=1):
+        self.coe = coe
+        self.dps = dps
+        self.rate= rate
+        self.duration = duration
+    
+    def get_dividends(self):        
+        return get_projected_dividends(self.dps, self.rate, years=self.duration)
+    
+    def get_cost_of_equity(self):
+        return get_discounting_factors(self.coe, self.duration)
+    
+    def get_value(self):
+        '''
+        Returns the share value of the high growth phase.
+        '''
+        return np.sum(self.get_dividends() / self.get_cost_of_equity())
+
+
 def get_projected_dividends(current, rate, years=1, places=4):
     '''
     Calculates the future expected dividends.
@@ -48,18 +77,3 @@ def gordon_growth(current, coe, growth):
         future = get_projected_dividends(current, growth)
     return selective_round(future / (np.array(coe) - np.array(growth)), 2)
     
-    
-def high_growth_phase_value(coe, dps, rate, period):
-    '''
-    Calculates the stock value of high growth phase.
-    coe     : cost of equity (can be a list of values).
-    dps     : baseline dividend per share.
-    rate    : expected dividend growth rate.
-    period  : length of the high growth phase in years.
-    Returns the share value of the high growth phase.
-    '''
-    dividends = get_projected_dividends(dps, rate, years=period)
-    coes = get_discounting_factors(coe, period)
-    return np.sum(dividends / coes)
-
-
